@@ -9,4 +9,4 @@ desc   Zeigt einen Bearbeiten-Button, der ein Popup mit einer Abwesenheitsmatrix
 <button onclick="window.open('/OrdUm-ZP_Wiki/lib/plugins/abwesenheitsmatrix/abwesenheiten.html?bereich=BEREICH', 'popup', 'width=1200,height=800,resizable=yes,scrollbars=yes')">
 Abwesenheiten erfassen </button>
 </html>
-url    https://github.com/OrdUmZPdual/abwesenheitsmatrix/archive/refs/heads/main.zip
+url    https://github.com/OrdUmZPdual/abwesenheitsmatrix/archive/refs/heads/dev.zip
