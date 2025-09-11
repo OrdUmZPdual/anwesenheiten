@@ -25,17 +25,27 @@
       overflow-x: auto;
     }
 
+    .sticky-top {
+      position: sticky;
+      top: 0;
+      background-color: white;
+      z-index: 5;
+      padding-bottom: 10px;
+    }
+
     .month-select {
       margin-bottom: 15px;
     }
 
     .button-bar {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     .button-bar button {
-      margin-right: 8px;
-      padding: 6px 12px;
+      padding: 6px 10px;
       font-weight: bold;
       cursor: pointer;
       border: none;
@@ -49,7 +59,7 @@
     }
 
     .legend-toggle {
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
 
     .legend-table {
@@ -69,6 +79,11 @@
       display: none;
     }
 
+    .scroll-body {
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
     table {
       border-collapse: collapse;
       width: 100%;
@@ -84,8 +99,14 @@
       user-select: none;
     }
 
-    th {
+    thead th {
+      position: sticky;
+      top: 150px; /* passt sich an sticky-Elemente oben an */
       background-color: #ecf1f7;
+      z-index: 2;
+    }
+
+    th {
       font-weight: bold;
     }
 
@@ -169,38 +190,42 @@
 
 <div class="container" id="mainContainer">
 
-  <div class="month-select">
-    <label for="monthSelect"><strong>Monat auswählen:</strong></label>
-    <select id="monthSelect"></select>
+  <div class="sticky-top">
+    <div class="month-select">
+      <label for="monthSelect"><strong>Monat auswählen:</strong></label>
+      <select id="monthSelect"></select>
+    </div>
+
+    <div class="button-bar" id="buttonBar"></div>
+
+    <div class="legend-toggle">
+      <button onclick="toggleLegende()">🛈 Legende anzeigen</button>
+    </div>
+
+    <div id="legendeBox" class="legend-hidden">
+      <table class="legend-table" id="legendenTabelle">
+        <thead>
+          <tr>
+            <th>Abkürzung</th><th>Bedeutung</th>
+            <th>Abkürzung</th><th>Bedeutung</th>
+            <th>Abkürzung</th><th>Bedeutung</th>
+          </tr>
+        </thead>
+        <tbody id="legendenBody"></tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="button-bar" id="buttonBar"></div>
-
-  <div class="legend-toggle">
-    <button onclick="toggleLegende()">🛈 Legende anzeigen</button>
-  </div>
-
-  <div id="legendeBox" class="legend-hidden">
-    <table class="legend-table" id="legendenTabelle">
+  <div class="scroll-body">
+    <table id="absenceTable">
       <thead>
         <tr>
-          <th>Abkürzung</th><th>Bedeutung</th>
-          <th>Abkürzung</th><th>Bedeutung</th>
-          <th>Abkürzung</th><th>Bedeutung</th>
+          <th class="name-cell">Mitarbeiter</th>
         </tr>
       </thead>
-      <tbody id="legendenBody"></tbody>
+      <tbody></tbody>
     </table>
   </div>
-
-  <table id="absenceTable">
-    <thead>
-      <tr>
-        <th class="name-cell">Mitarbeiter</th>
-              </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
 
   <div class="form-area" id="formArea">
     <input type="text" id="vorname" placeholder="Vorname" />
@@ -352,6 +377,7 @@
 
     tbody.appendChild(tr);
   }
+
   document.body.addEventListener("mouseup", () => {
     isMouseDown = false;
     dragRow = null;
@@ -419,7 +445,6 @@
       }
     });
 
-  // Kürzel-Buttons erstellen
   const buttonBar = document.getElementById("buttonBar");
   kuerzelLegende.forEach(k => {
     const btn = document.createElement("button");
@@ -438,7 +463,6 @@
     buttonBar.appendChild(btn);
   });
 
-  // Leeren-Button
   const leerBtn = document.createElement("button");
   leerBtn.textContent = "–";
   leerBtn.title = "Zelle leeren";
@@ -455,7 +479,6 @@
   }
   buttonBar.appendChild(leerBtn);
 
-  // Legendentabelle aufbauen
   const legendenBody = document.getElementById("legendenBody");
   for (let i = 0; i < kuerzelLegende.length; i += 3) {
     const tr = document.createElement("tr");
