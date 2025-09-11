@@ -101,7 +101,7 @@
 
     thead th {
       position: sticky;
-      top: 150px; /* passt sich an sticky-Elemente oben an */
+      top: 0px; /* wird dynamisch per JS gesetzt */
       background-color: #ecf1f7;
       z-index: 2;
     }
@@ -494,7 +494,20 @@
   }
 
   buildMonthSelect();
+  function updateStickyHeaderOffset() {
+  const stickyTop = document.querySelector(".sticky-top");
+  const theadThs = document.querySelectorAll("thead th");
+  const height = stickyTop.offsetHeight;
+  theadThs.forEach(th => {
+    th.style.top = height + "px";
+  });
+}
+
+window.addEventListener("load", updateStickyHeaderOffset);
+window.addEventListener("resize", updateStickyHeaderOffset);
+
 </script>
 
 </body>
 </html>
+
